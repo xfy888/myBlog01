@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+sys.path.insert(0,os.path.join(BASE_DIR,"apps"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -40,8 +40,14 @@ INSTALLED_APPS = [
     'article.apps.ArticleConfig',
     'user.apps.UserConfig',
     'cousers.apps.CousersConfig',
+    'markdownx',
+    'django.forms',
+    'django.contrib.sites',
+    'django_comments',
+    
 ]
 
+SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -69,6 +75,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# 设置优先从自建的templates中渲染模板
+FORMS_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'myBlog01.wsgi.application'
 
@@ -114,7 +123,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -122,6 +131,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# 开发时用
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
+
+# 上线时才用：
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
